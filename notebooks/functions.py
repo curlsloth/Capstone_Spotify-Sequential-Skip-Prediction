@@ -8,38 +8,39 @@ def cal_similarMat(df_train):
     import numpy as np
     import pandas as pd
     
+    more_sim_index = False # turn it as False to only calculate a few indexes
     
-    sessions = list(np.sort(df_train['session_id'].unique())) 
-    tracks = list(df_train['clus'].unique()) 
-    no_skip_2 = (list(df_train['skip_2']==False))*1 # use *1 to convert bool to integer
     
-    DfSessionUnique = []
-    DfSessionUnique = pd.DataFrame(sessions,columns=['sessions'])
+#     sessions = list(np.sort(df_train['session_id'].unique())) 
+#     tracks = list(df_train['clus'].unique()) 
+#     no_skip_2 = (list(df_train['skip_2']==False))*1 # use *1 to convert bool to integer
     
-    from scipy import sparse
-    from pandas.api.types import CategoricalDtype
+#     DfSessionUnique = []
+#     DfSessionUnique = pd.DataFrame(sessions,columns=['sessions'])
+    
+#     from scipy import sparse
+#     from pandas.api.types import CategoricalDtype
 
-    rows = df_train['session_id'].astype(CategoricalDtype(categories=sessions)).cat.codes # unique sessions (index)
+#     rows = df_train['session_id'].astype(CategoricalDtype(categories=sessions)).cat.codes # unique sessions (index)
 
-    # Get the associated row indices
-    cols = df_train['clus'].astype(CategoricalDtype(categories=tracks)).cat.codes # unique tracks (column)
+#     # Get the associated row indices
+#     cols = df_train['clus'].astype(CategoricalDtype(categories=tracks)).cat.codes # unique tracks (column)
     
     
-    # Get the associated column indices
-    #Compressed Sparse Row matrix
-    listeningSparse = []
-    listeningSparse = sparse.csr_matrix((no_skip_2, (rows, cols)), shape=(len(sessions), len(tracks)))
-    #csr_matrix((data, (row_ind, col_ind)), [shape=(M, N)])
-    #where data, row_ind and col_ind satisfy the relationship a[row_ind[k], col_ind[k]] = data[k]. , see https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html
+#     # Get the associated column indices
+#     #Compressed Sparse Row matrix
+#     listeningSparse = []
+#     listeningSparse = sparse.csr_matrix((no_skip_2, (rows, cols)), shape=(len(sessions), len(tracks)))
+#     #csr_matrix((data, (row_ind, col_ind)), [shape=(M, N)])
+#     #where data, row_ind and col_ind satisfy the relationship a[row_ind[k], col_ind[k]] = data[k]. , see https://docs.scipy.org/doc/scipy/reference/generated/scipy.sparse.csr_matrix.html
 
-    listeningSparse
-    #a sparse matrix is not a pandas dataframe, but sparse matrices are efficient for row slicing and fast matrix vector products
+#     listeningSparse
+#     #a sparse matrix is not a pandas dataframe, but sparse matrices are efficient for row slicing and fast matrix vector products
     
     
-    DataBinary = df_train.copy()
-    DataBinary['ListenYes'] = (DataBinary['skip_2'] == False)*1
+    df_train['ListenYes'] = (df_train['skip_2'] == False)*1
     
-    data2=DataBinary[['session_id','clus','ListenYes']]
+    data2=df_train[['session_id','clus','ListenYes']]
 
     data2['ListenYes'].replace(0, -1, inplace = True)
 
@@ -67,11 +68,6 @@ def cal_similarMat(df_train):
     #Another approach to the above would be using correlation
     TrackTrackCorr = DfTracksListenNorm.corr()
     
-    #Spearman correlation
-    TrackTrackSpearCorr = DfTracksListenNorm.corr(method = 'spearman')
-    
-    #Kendall correlation
-    TrackTrackKendCorr = DfTracksListenNorm.corr(method = 'kendall')
     
     from scipy.spatial.distance import cdist
     
@@ -79,32 +75,45 @@ def cal_similarMat(df_train):
     # Euclidean distance
     TrackTrackEuclDist = pd.DataFrame(cdist(DfTracksListenNorm.T,DfTracksListenNorm.T, 'euclidean'), index = TrackTrackSim.index, columns = TrackTrackSim.columns)
 
-    # Squared Euclidean distance
-    TrackTrackSqEuclDist = pd.DataFrame(cdist(DfTracksListenNorm.T,DfTracksListenNorm.T, 'sqeuclidean'), index = TrackTrackSim.index, columns = TrackTrackSim.columns)
     
     # Manhattan distance
     TrackTrackManhDist = pd.DataFrame(cdist(DfTracksListenNorm.T,DfTracksListenNorm.T, 'cityblock'), index = TrackTrackSim.index, columns = TrackTrackSim.columns)
 
-    # Canberra distance
-    TrackTrackCanbDist = pd.DataFrame(cdist(DfTracksListenNorm.T,DfTracksListenNorm.T, 'canberra'), index = TrackTrackSim.index, columns = TrackTrackSim.columns)
 
-    #### boolean distances
-    # Hamming distance
-    TrackTrackHammDist = pd.DataFrame(cdist(DfTracksListenNorm.T>0,DfTracksListenNorm.T>0, 'hamming'), index = TrackTrackSim.index, columns = TrackTrackSim.columns)
-
+   
  
 
     # Create a place holder matrix for similarities, and fill in the session column
     SessTrackSimilarity = pd.DataFrame(index=DfResetted.index, columns=DfResetted.columns)
     SessTrackSimilarity.iloc[:,:1] = DfResetted.iloc[:,:1]
     SessTrackCorrelation = SessTrackSimilarity.copy()
-    SessTrackSpearCorr = SessTrackSimilarity.copy()
-    SessTrackKendCorr = SessTrackSimilarity.copy()
     SessTrackEuclDist = SessTrackSimilarity.copy()
-    SessTrackSqEuclDist = SessTrackSimilarity.copy()
     SessTrackManhDist = SessTrackSimilarity.copy()
-    SessTrackCanbDist = SessTrackSimilarity.copy()
-    SessTrackHammDist = SessTrackSimilarity.copy()
+    
+    
+    
+    if more_sim_index:
+        #Spearman correlation
+        TrackTrackSpearCorr = DfTracksListenNorm.corr(method = 'spearman')
+
+        #Kendall correlation
+        TrackTrackKendCorr = DfTracksListenNorm.corr(method = 'kendall')
+
+        # Squared Euclidean distance
+        TrackTrackSqEuclDist = pd.DataFrame(cdist(DfTracksListenNorm.T,DfTracksListenNorm.T, 'sqeuclidean'), index = TrackTrackSim.index, columns = TrackTrackSim.columns)
+        
+        # Canberra distance
+        TrackTrackCanbDist = pd.DataFrame(cdist(DfTracksListenNorm.T,DfTracksListenNorm.T, 'canberra'), index = TrackTrackSim.index, columns = TrackTrackSim.columns)
+
+        #### boolean distances
+        # Hamming distance
+        TrackTrackHammDist = pd.DataFrame(cdist(DfTracksListenNorm.T>0,DfTracksListenNorm.T>0, 'hamming'), index = TrackTrackSim.index, columns = TrackTrackSim.columns)
+        
+        SessTrackSpearCorr = SessTrackSimilarity.copy()
+        SessTrackKendCorr = SessTrackSimilarity.copy()
+        SessTrackSqEuclDist = SessTrackSimilarity.copy()
+        SessTrackCanbDist = SessTrackSimilarity.copy()
+        SessTrackHammDist = SessTrackSimilarity.copy()
 
     #We now loop through the rows and columns filling in empty spaces with similarity scores.
     
@@ -120,37 +129,48 @@ def cal_similarMat(df_train):
             SessionListening = DfTracksListen.loc[ses,]
             TrackSimilarity = TrackTrackSim[tra]
             TrackCorrelation = TrackTrackCorr[tra]
-            TrackSpearCorr = TrackTrackSpearCorr[tra]
-            TrackKendCorr = TrackTrackKendCorr[tra]
             TrackEuclDist = TrackTrackEuclDist[tra]
-            TrackSqEuclDist = TrackTrackSqEuclDist[tra]
             TrackManhDist = TrackTrackManhDist[tra]
-            TrackCanbDist = TrackTrackCanbDist[tra]
-            TrackHammDist = TrackTrackHammDist[tra]
-
+            
             SessTrackSimilarity.loc[i][j] = sum(SessionListening*TrackSimilarity)/sum(TrackSimilarity)
             SessTrackCorrelation.loc[i][j] = sum(SessionListening*TrackCorrelation)/sum(TrackCorrelation)
-            SessTrackSpearCorr.loc[i][j] = sum(SessionListening*TrackSpearCorr)/sum(TrackSpearCorr)
-            SessTrackKendCorr.loc[i][j] = sum(SessionListening*TrackKendCorr)/sum(TrackKendCorr)
             SessTrackEuclDist.loc[i][j] = sum(SessionListening*TrackEuclDist)/sum(TrackEuclDist)
-            SessTrackSqEuclDist.loc[i][j] = sum(SessionListening*TrackSqEuclDist)/sum(TrackSqEuclDist)
             SessTrackManhDist.loc[i][j] = sum(SessionListening*TrackManhDist)/sum(TrackManhDist)
-            SessTrackCanbDist.loc[i][j] = sum(SessionListening*TrackCanbDist)/sum(TrackCanbDist)
-            SessTrackHammDist.loc[i][j] = sum(SessionListening*TrackHammDist)/sum(TrackHammDist)
+            
+            
+            if more_sim_index:
+                TrackSpearCorr = TrackTrackSpearCorr[tra]
+                TrackKendCorr = TrackTrackKendCorr[tra]
+                TrackSqEuclDist = TrackTrackSqEuclDist[tra]
+                TrackCanbDist = TrackTrackCanbDist[tra]
+                TrackHammDist = TrackTrackHammDist[tra]
+                
+                SessTrackSpearCorr.loc[i][j] = sum(SessionListening*TrackSpearCorr)/sum(TrackSpearCorr)
+                SessTrackKendCorr.loc[i][j] = sum(SessionListening*TrackKendCorr)/sum(TrackKendCorr)
+                SessTrackSqEuclDist.loc[i][j] = sum(SessionListening*TrackSqEuclDist)/sum(TrackSqEuclDist)
+                SessTrackCanbDist.loc[i][j] = sum(SessionListening*TrackCanbDist)/sum(TrackCanbDist)
+                SessTrackHammDist.loc[i][j] = sum(SessionListening*TrackHammDist)/sum(TrackHammDist)
 
+
+    
     
     SessTrackSimilarity.set_index('session_id', inplace = True)
     SessTrackCorrelation.set_index('session_id', inplace = True)
-    SessTrackSpearCorr.set_index('session_id', inplace = True)
-    SessTrackKendCorr.set_index('session_id', inplace = True)
     SessTrackEuclDist.set_index('session_id', inplace = True)
-    SessTrackSqEuclDist.set_index('session_id', inplace = True)
     SessTrackManhDist.set_index('session_id', inplace = True)
-    SessTrackCanbDist.set_index('session_id', inplace = True)
-    SessTrackHammDist.set_index('session_id', inplace = True)
     
+    if more_sim_index:
+        SessTrackSpearCorr.set_index('session_id', inplace = True)
+        SessTrackKendCorr.set_index('session_id', inplace = True)
+        SessTrackSqEuclDist.set_index('session_id', inplace = True)
+        SessTrackCanbDist.set_index('session_id', inplace = True)
+        SessTrackHammDist.set_index('session_id', inplace = True)
+        
     
-    sim_output = [SessTrackSimilarity, SessTrackCorrelation, SessTrackSpearCorr, SessTrackKendCorr, SessTrackEuclDist, SessTrackSqEuclDist, SessTrackManhDist, SessTrackCanbDist, SessTrackHammDist]
+    if more_sim_index:
+        sim_output = [SessTrackSimilarity, SessTrackCorrelation, SessTrackSpearCorr, SessTrackKendCorr, SessTrackEuclDist, SessTrackSqEuclDist, SessTrackManhDist, SessTrackCanbDist, SessTrackHammDist]
+    else:
+        sim_output = [SessTrackSimilarity, SessTrackCorrelation, SessTrackEuclDist, SessTrackManhDist]
     
     
     return sim_output
