@@ -179,6 +179,8 @@ def cal_similarMat(df_train):
 
 
 def featureAugment(df_history, cols):
+    import pandas as pd
+    import numpy as np
     df_fa = pd.DataFrame()
     
     # split the data based on skip_2
