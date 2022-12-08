@@ -3,6 +3,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
+  - _py-xgboost-mutex=2.0=cpu_0
   - affine=2.3.1=pyhd8ed1ab_0
   - appnope=0.1.3=pyhd8ed1ab_0
   - argon2-cffi=21.3.0=pyhd8ed1ab_0
@@ -162,6 +163,7 @@ dependencies:
   - libwebp=1.2.4=hfa4350a_0
   - libwebp-base=1.2.4=h775f41a_0
   - libxcb=1.13=h0d85af4_1004
+  - libxgboost=1.7.1=cpu_h0c1cf5f_0
   - libxml2=2.9.14=hea49891_4
   - libxslt=1.1.35=heaa0ce8_0
   - libzip=1.9.2=h6db710c_1
@@ -203,7 +205,7 @@ dependencies:
   - numpy-base=1.22.3=py38h3b1a694_0
   - openjpeg=2.5.0=h5d0d7b0_1
   - openpyxl=3.0.10=py38hef030d1_1
-  - openssl=3.0.7=hfd90126_0
+  - openssl=3.0.7=hfd90126_1
   - packaging=21.3=pyhd8ed1ab_0
   - pandas=1.5.1=py38hec72209_1
   - pandas-profiling=3.4.0=pyhd8ed1ab_1
@@ -235,6 +237,7 @@ dependencies:
   - pthread-stubs=0.4=hc929b4f_1001
   - ptyprocess=0.7.0=pyhd3deb0d_0
   - pure_eval=0.2.2=pyhd8ed1ab_0
+  - py-xgboost=1.7.1=cpu_py38he866dac_0
   - pyaml=21.10.1=pyhd8ed1ab_0
   - pybind11-abi=4=hd8ed1ab_3
   - pycparser=2.21=pyhd8ed1ab_0
@@ -254,7 +257,6 @@ dependencies:
   - python-dotenv=0.20.0=pyhd8ed1ab_0
   - python-fastjsonschema=2.16.2=pyhd8ed1ab_0
   - python-graphviz=0.20.1=pyh22cad53_0
-  - python-slugify=6.1.2=pyhd8ed1ab_0
   - python-wget=3.2=py_0
   - python_abi=3.8=2_cp38
   - pytz=2022.6=pyhd8ed1ab_0
@@ -311,6 +313,7 @@ dependencies:
   - wheel=0.38.4=pyhd8ed1ab_0
   - woodwork=0.20.0=pyhd8ed1ab_0
   - xerces-c=3.2.4=h2007e90_1
+  - xgboost=1.7.1=cpu_py38ha5ba132_0
   - xorg-libxau=1.0.9=h35c211d_0
   - xorg-libxdmcp=1.1.3=h35c211d_0
   - xyzservices=2022.9.0=pyhd8ed1ab_0
@@ -328,6 +331,7 @@ dependencies:
     - commonmark==0.9.1
     - gitdb==4.0.9
     - gitpython==3.1.18
+    - python-slugify==5.0.2
     - pyzmq==22.1.0
     - requests-toolbelt==0.9.1
     - rich==10.16.2
