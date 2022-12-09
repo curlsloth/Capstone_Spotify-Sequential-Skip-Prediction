@@ -1,0 +1,229 @@
+tree
+version=v3
+num_class=1
+num_tree_per_iteration=1
+label_index=0
+max_feature_idx=71
+objective=binary sigmoid:1
+feature_names=session_position session_length clus weight skip_1_mean skip_2_mean skip_3_mean not_skipped_mean context_switch_mean hour_of_day_mean premium_mean no_pause_before_play_mean short_pause_before_play_mean long_pause_before_play_mean hist_user_behavior_n_seekfwd_mean hist_user_behavior_n_seekback_mean hist_user_behavior_is_shuffle_mean hist_user_behavior_reason_end_backbtn_mean hist_user_behavior_reason_end_clickrow_mean hist_user_behavior_reason_end_endplay_mean hist_user_behavior_reason_end_fwdbtn_mean hist_user_behavior_reason_end_logout_mean hist_user_behavior_reason_end_remote_mean hist_user_behavior_reason_end_trackdone_mean hist_user_behavior_reason_start_appload_mean hist_user_behavior_reason_start_backbtn_mean hist_user_behavior_reason_start_clickrow_mean hist_user_behavior_reason_start_endplay_mean hist_user_behavior_reason_start_fwdbtn_mean hist_user_behavior_reason_start_playbtn_mean hist_user_behavior_reason_start_remote_mean hist_user_behavior_reason_start_trackdone_mean hist_user_behavior_reason_start_trackerror_mean context_type_catalog_mean context_type_charts_mean context_type_editorial_playlist_mean context_type_personalized_playlist_mean context_type_radio_mean context_type_user_collection_mean CanbDist300 CosSim300 LinCorr300 ManhDist300 HammDist300 SpearCorr300 KendCorr300 duration release_year us_popularity_estimate acousticness beat_strength bounciness danceability dyn_range_mean energy flatness instrumentalness liveness loudness mechanism organism speechiness tempo valence acoustic_vector_0 acoustic_vector_1 acoustic_vector_2 acoustic_vector_3 acoustic_vector_4 acoustic_vector_5 acoustic_vector_6 acoustic_vector_7
+feature_infos=[5:11] [10:20] [0:299] [0.5:1] [0:1] [0:1] [0:1] [0:1] [0:0.88888888888888884] [0:23] [0:1] [0:0.88888888888888884] [0:0.88888888888888884] [0:0.88888888888888884] [0:18] [0:21] [0:1] [0:1] [0:0.80000000000000004] [0:1] [0:1] [0:0.75] [0:0.83333333333333337] [0:1] [0:1] [0:1] [0:1] [0:0.25] [0:1] [0:0.77777777777777779] [0:1] [0:1] [0:1] [0:1] [0:1] [0:1] [0:1] [0:1] [0:1] [-0.033607510500340707:0.033615369170829142] [-9.0000000000000568:9.0000000000000568] [-563.08960681567805:845.60342952706617] [-0.036023412556611699:0.037520649679526959] [-0.033616073158096241:0.034695087538794418] [-60.980136201434924:60.980136201434924] [-220.50658517690047:154.67105899179901] [30.013330459594727:1787.760986328125] [1950:2018] [90.009817022392255:99.999998391627642] [0:0.99579644203186035] [0:0.98479127883911122] [0:0.97160184383392323] [0:0.98495167493820202] [0:27.782550811767575] [0:0.99987661838531483] [0:1.1057934761047363] [0:0.99999642372131337] [0:1] [-60:2.3629999160766602] [0:1] [0:0.96508622169494618] [0:0.96620726585388184] [0:247.82400512695312] [0:0.99998998641967762] [-1.1075210571289062:0.93216466903686523] [-1.0978794097900393:0.79969209432601918] [-0.79651224613189697:0.60183244943618774] [-0.83554196357727051:1.171862006187439] [-1.0043936967849731:0.89576900005340565] [-0.96838212013244618:0.3826272189617157] [-0.73869645595550526:0.99535965919494618] [-0.95421963930130005:1.1060562133789062]
+tree_sizes=360 355 356 356 358
+
+Tree=0
+num_leaves=2
+num_cat=0
+split_feature=23
+split_gain=234446
+threshold=0.35416666666666669
+decision_type=2
+left_child=-1
+right_child=-2
+leaf_value=0.45547566032133957 -0.23691543276964713
+leaf_weight=292399.35384874046 210110.72180068493
+leaf_count=1570327 1128235
+internal_value=0.165971
+internal_weight=0
+internal_count=2698562
+is_linear=0
+shrinkage=1
+
+
+Tree=1
+num_leaves=2
+num_cat=0
+split_feature=4
+split_gain=90245.3
+threshold=0.30952380952380959
+decision_type=2
+left_child=-1
+right_child=-2
+leaf_value=-0.23521839555867233 0.19676142793451487
+leaf_weight=220269.18611872196 268011.35125344247
+leaf_count=1200958 1497604
+internal_value=0
+internal_weight=0
+internal_count=2698562
+is_linear=0
+shrinkage=0.5
+
+
+Tree=2
+num_leaves=2
+num_cat=0
+split_feature=20
+split_gain=45407.3
+threshold=0.41428571428571431
+decision_type=2
+left_child=-1
+right_child=-2
+leaf_value=-0.16268204610294149 0.14812542567966205
+leaf_weight=222340.02196594328 249243.37207686156
+leaf_count=1255009 1443553
+internal_value=0
+internal_weight=0
+internal_count=2698562
+is_linear=0
+shrinkage=0.5
+
+
+Tree=3
+num_leaves=2
+num_cat=0
+split_feature=23
+split_gain=26652.7
+threshold=0.76388888888888895
+decision_type=2
+left_child=-1
+right_child=-2
+leaf_value=0.048582791743986602 -0.30546678098547703
+leaf_weight=397020.09184709191 61373.163485109806
+leaf_count=2337156 361406
+internal_value=0
+internal_weight=0
+internal_count=2698562
+is_linear=0
+shrinkage=0.5
+
+
+Tree=4
+num_leaves=2
+num_cat=0
+split_feature=43
+split_gain=21910.6
+threshold=-0.014279614936292635
+decision_type=2
+left_child=-1
+right_child=-2
+leaf_value=0.24432832552107259 -0.050248401999963631
+leaf_weight=75980.966886796057 373064.24568673223
+leaf_count=474720 2223842
+internal_value=0
+internal_weight=0
+internal_count=2698562
+is_linear=0
+shrinkage=0.5
+
+
+end of trees
+
+feature_importances:
+hist_user_behavior_reason_end_trackdone_mean=2
+skip_1_mean=1
+hist_user_behavior_reason_end_fwdbtn_mean=1
+HammDist300=1
+
+parameters:
+[boosting: gbdt]
+[objective: binary]
+[metric: binary_error]
+[tree_learner: serial]
+[device_type: cpu]
+[data: ]
+[valid: ]
+[num_iterations: 5]
+[learning_rate: 0.5]
+[num_leaves: 2]
+[num_threads: 5]
+[deterministic: 0]
+[force_col_wise: 0]
+[force_row_wise: 1]
+[histogram_pool_size: -1]
+[max_depth: -1]
+[min_data_in_leaf: 20]
+[min_sum_hessian_in_leaf: 0.001]
+[bagging_fraction: 1]
+[pos_bagging_fraction: 1]
+[neg_bagging_fraction: 1]
+[bagging_freq: 0]
+[bagging_seed: 3]
+[feature_fraction: 1]
+[feature_fraction_bynode: 1]
+[feature_fraction_seed: 2]
+[extra_trees: 0]
+[extra_seed: 6]
+[early_stopping_round: 5]
+[first_metric_only: 0]
+[max_delta_step: 0]
+[lambda_l1: 0]
+[lambda_l2: 0]
+[linear_lambda: 0]
+[min_gain_to_split: 0]
+[drop_rate: 0.1]
+[max_drop: 50]
+[skip_drop: 0.5]
+[xgboost_dart_mode: 0]
+[uniform_drop: 0]
+[drop_seed: 4]
+[top_rate: 0.2]
+[other_rate: 0.1]
+[min_data_per_group: 100]
+[max_cat_threshold: 32]
+[cat_l2: 10]
+[cat_smooth: 10]
+[max_cat_to_onehot: 4]
+[top_k: 20]
+[monotone_constraints: ]
+[monotone_constraints_method: basic]
+[monotone_penalty: 0]
+[feature_contri: ]
+[forcedsplits_filename: ]
+[refit_decay_rate: 0.9]
+[cegb_tradeoff: 1]
+[cegb_penalty_split: 0]
+[cegb_penalty_feature_lazy: ]
+[cegb_penalty_feature_coupled: ]
+[path_smooth: 0]
+[interaction_constraints: ]
+[verbosity: 0]
+[saved_feature_importance_type: 0]
+[linear_tree: 0]
+[max_bin: 255]
+[max_bin_by_feature: ]
+[min_data_in_bin: 3]
+[bin_construct_sample_cnt: 200000]
+[data_random_seed: 1]
+[is_enable_sparse: 1]
+[enable_bundle: 1]
+[use_missing: 1]
+[zero_as_missing: 0]
+[feature_pre_filter: 1]
+[pre_partition: 0]
+[two_round: 0]
+[header: 0]
+[label_column: ]
+[weight_column: ]
+[group_column: ]
+[ignore_column: ]
+[categorical_feature: ]
+[forcedbins_filename: ]
+[precise_float_parser: 0]
+[objective_seed: 5]
+[num_class: 1]
+[is_unbalance: 0]
+[scale_pos_weight: 1]
+[sigmoid: 1]
+[boost_from_average: 1]
+[reg_sqrt: 0]
+[alpha: 0.9]
+[fair_c: 1]
+[poisson_max_delta_step: 0.7]
+[tweedie_variance_power: 1.5]
+[lambdarank_truncation_level: 30]
+[lambdarank_norm: 1]
+[label_gain: ]
+[eval_at: ]
+[multi_error_top_k: 1]
+[auc_mu_weights: ]
+[num_machines: 1]
+[local_listen_port: 12400]
+[time_out: 120]
+[machine_list_filename: ]
+[machines: ]
+[gpu_platform_id: -1]
+[gpu_device_id: -1]
+[gpu_use_dp: 0]
+[num_gpu: 1]
+
+end of parameters
+
+pandas_categorical:[]
