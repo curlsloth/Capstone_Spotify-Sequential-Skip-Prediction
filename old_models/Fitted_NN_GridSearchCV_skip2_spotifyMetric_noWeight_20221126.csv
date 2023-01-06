@@ -1,0 +1,2 @@
+,mean_fit_time,std_fit_time,mean_score_time,std_score_time,param_mlpclassifier__hidden_layer_sizes,param_simpleimputer__strategy,params,split0_test_score,split1_test_score,split2_test_score,split3_test_score,mean_test_score,std_test_score,rank_test_score
+0,1204.5673505067825,148.99877562300463,10.159065961837769,2.4441605363167422,"(1000, 1000)",median,"{'mlpclassifier__hidden_layer_sizes': (1000, 1000), 'simpleimputer__strategy': 'median'}",0.41737488008629386,0.42153423870937246,0.417037553146258,0.38683663036974053,0.41069582557791623,0.013888481494271635,1

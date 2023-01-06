@@ -1,1 +1,0 @@
-{"target": 0.7397170622975615, "params": {"bagging_fraction": 0.5655680954619303, "bagging_freq": 9.522663434333326, "batch_size": 10.0, "learning_rate": 0.02895718855274416, "nFile": 100.0, "num_iterations": 717.5998767137202, "num_leaves": 20.878224294505344}, "datetime": {"datetime": "2022-12-10 00:24:55", "elapsed": 0.0, "delta": 0.0}}
