@@ -115,7 +115,7 @@ def get_sim(df_hist, df_lookup, sim_file_list, score_name_list):
     return df_lookup
 
 
-def prep_dfs(file, tf_df, kmean_df):
+def prep_dfs(file, tf_df, kmean_df, track6 = False):
     log_df = pd.read_csv(file)
     log_df = log_df.merge(kmean_df)
 
@@ -179,12 +179,16 @@ def prep_dfs(file, tf_df, kmean_df):
     log_df_2_5 = log_df_2_5[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
     log_df_2_5['weight'] = 0.47
     
-#     #remaining trials in the 2nd half
-#     log_df_2_6 = log_df.loc[(log_df['session_position']>half_cut+5)]
-#     log_df_2_6 = log_df_2_6[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
-#     log_df_2_6['weight'] = 0.35
+    #remaining trials in the 2nd half
+    log_df_2_6 = log_df.loc[(log_df['session_position']>half_cut+5)]
+    log_df_2_6 = log_df_2_6[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+    log_df_2_6['weight'] = 0.35
 
-    log_df_2 = pd.concat([log_df_2_1,log_df_2_2,log_df_2_3,log_df_2_4,log_df_2_5])
+    if track6 == True:
+        log_df_2 = pd.concat([log_df_2_1,log_df_2_2,log_df_2_3,log_df_2_4,log_df_2_5,log_df_2_6])
+    else:
+        log_df_2 = pd.concat([log_df_2_1,log_df_2_2,log_df_2_3,log_df_2_4,log_df_2_5])
+        
     log_df_2 = log_df_2.merge(log_df_1_summary_skip2True, on='session_id')
     log_df_2 = log_df_2.merge(log_df_1_summary_skip2False, on='session_id')
 
