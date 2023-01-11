@@ -151,7 +151,9 @@ def prep_dfs(file, tf_df, kmean_df):
 
     half_cut = log_df['session_length']/2
     
-    log_df_2 = log_df.loc[(log_df['session_position']>half_cut) & (log_df['session_position']<=half_cut+5)]
+#     log_df_2 = log_df.loc[(log_df['session_position']>half_cut) & (log_df['session_position']<=half_cut+5)]
+    log_df_2 = log_df.loc[log_df['session_position']>half_cut]
+
     log_df_2 = log_df_2[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
     
     log_df_2['weight'] = precise_weight_perSession(log_df_2)
