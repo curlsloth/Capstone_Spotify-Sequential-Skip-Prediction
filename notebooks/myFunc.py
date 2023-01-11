@@ -122,8 +122,9 @@ def prep_dfs(file, tf_df, kmean_df):
     log_df_1 = log_df.loc[log_df['session_position']<=(log_df['session_length']/2)]
     log_df_1['hour_of_day'] = log_df_1['hour_of_day'].astype('float')
     log_df_1['premium'] = log_df_1['premium'].astype('bool')
+    log_df_1['weekday'] = log_df_1['date'].astype('datetime64[ns]').dt.dayofweek
     log_df_1 = log_df_1.drop(columns = ['date'])
-    log_df_1 = pd.get_dummies(log_df_1, columns=['hist_user_behavior_reason_end', 'hist_user_behavior_reason_start', 'context_type'], dtype = 'bool')
+    log_df_1 = pd.get_dummies(log_df_1, columns=['hist_user_behavior_reason_end', 'hist_user_behavior_reason_start', 'context_type','weekday'], dtype = 'bool')
     log_df_1 = log_df_1.merge(tf_df.drop(columns = ['time_signature','mode','key']))
     
                      
@@ -150,15 +151,40 @@ def prep_dfs(file, tf_df, kmean_df):
 
 
     half_cut = log_df['session_length']/2
+
+    # need to at least include 2 trials, otherwise the log_df_1_summary will confound with all the tracks in the same session
+
+    #1st trial in the 2nd half
+    log_df_2_1 = log_df.loc[(log_df['session_position']>half_cut) & (log_df['session_position']<=half_cut+1)]
+    log_df_2_1 = log_df_2_1[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+    log_df_2_1['weight'] = 1
+
+    #2nd trial in the 2nd half
+    log_df_2_2 = log_df.loc[(log_df['session_position']>half_cut+1) & (log_df['session_position']<=half_cut+2)]
+    log_df_2_2 = log_df_2_2[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+    log_df_2_2['weight'] = 0.75
     
-#     log_df_2 = log_df.loc[(log_df['session_position']>half_cut) & (log_df['session_position']<=half_cut+5)]
-    log_df_2 = log_df.loc[log_df['session_position']>half_cut]
-
-    log_df_2 = log_df_2[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+    #3rd trial in the 2nd half
+    log_df_2_3 = log_df.loc[(log_df['session_position']>half_cut+2) & (log_df['session_position']<=half_cut+3)]
+    log_df_2_3 = log_df_2_3[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+    log_df_2_3['weight'] = 0.62
     
-    log_df_2['weight'] = precise_weight_perSession(log_df_2)
+    #4th trial in the 2nd half
+    log_df_2_4 = log_df.loc[(log_df['session_position']>half_cut+3) & (log_df['session_position']<=half_cut+4)]
+    log_df_2_4 = log_df_2_4[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+    log_df_2_4['weight'] = 0.53
+    
+    #5th trial in the 2nd half
+    log_df_2_5 = log_df.loc[(log_df['session_position']>half_cut+4) & (log_df['session_position']<=half_cut+5)]
+    log_df_2_5 = log_df_2_5[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+    log_df_2_5['weight'] = 0.47
+    
+#     #remaining trials in the 2nd half
+#     log_df_2_6 = log_df.loc[(log_df['session_position']>half_cut+5)]
+#     log_df_2_6 = log_df_2_6[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+#     log_df_2_6['weight'] = 0.35
 
-
+    log_df_2 = pd.concat([log_df_2_1,log_df_2_2,log_df_2_3,log_df_2_4,log_df_2_5])
     log_df_2 = log_df_2.merge(log_df_1_summary_skip2True, on='session_id')
     log_df_2 = log_df_2.merge(log_df_1_summary_skip2False, on='session_id')
 
@@ -174,4 +200,3 @@ def prep_dfs(file, tf_df, kmean_df):
     score_name_list = ['CanbDist300', 'CosSim300','LinCorr300','ManhDist300','HammDist300','SpearCorr300','KendCorr300','ChebDist','BrayDist']
 
     return get_sim(log_df_history, log_df_2, sim_file_list, score_name_list)
-
