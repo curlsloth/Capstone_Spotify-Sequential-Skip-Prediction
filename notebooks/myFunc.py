@@ -55,6 +55,15 @@ def ave_pre(submission,groundtruth,counter):
         c += 1
     return t/len(groundtruth)
 
+def spotify_eval(y_true, y_pred, input_df):
+    df_temp = input_df.loc[y_true.index.values,['session_id','skip_2','session_position','session_length']]
+    df_temp['pred'] = y_pred
+    ground_truths = get_ground_truth(df_temp)
+    submission = get_submission(df_temp)
+#     return ground_truths, submission
+    ap,first_pred_acc = evaluate(submission,ground_truths)
+    return ap,first_pred_acc
+
 
 def precise_weight_perSession(df_test_pred):
     # calculate the average weight per session position (counted from the 1st track being predicted) * session length
