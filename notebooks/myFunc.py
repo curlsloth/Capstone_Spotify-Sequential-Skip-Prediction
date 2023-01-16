@@ -124,16 +124,17 @@ def get_sim(df_hist, df_lookup, sim_file_list, score_name_list):
     return df_lookup
 
 
-def prep_dfs(file, tf_df, kmean_df, track6 = False):
+def prep_dfs(file, tf_df, simFolder, kmean_df, track6 = False):
     log_df = pd.read_csv(file)
     log_df = log_df.merge(kmean_df)
 
     log_df_1 = log_df.loc[log_df['session_position']<=(log_df['session_length']/2)]
     log_df_1['hour_of_day'] = log_df_1['hour_of_day'].astype('float')
     log_df_1['premium'] = log_df_1['premium'].astype('bool')
-    log_df_1['weekday'] = log_df_1['date'].astype('datetime64[ns]').dt.dayofweek
+#     log_df_1['weekday'] = log_df_1['date'].astype('datetime64[ns]').dt.dayofweek
     log_df_1 = log_df_1.drop(columns = ['date'])
-    log_df_1 = pd.get_dummies(log_df_1, columns=['hist_user_behavior_reason_end', 'hist_user_behavior_reason_start', 'context_type','weekday'], dtype = 'bool')
+    log_df_1 = pd.get_dummies(log_df_1, columns=['hist_user_behavior_reason_end', 'hist_user_behavior_reason_start', 'context_type'], dtype = 'bool')
+#     log_df_1 = pd.get_dummies(log_df_1, columns=['hist_user_behavior_reason_end', 'hist_user_behavior_reason_start', 'context_type','weekday'], dtype = 'bool')
     log_df_1 = log_df_1.merge(tf_df.drop(columns = ['time_signature','mode','key']))
     
                      
@@ -201,15 +202,108 @@ def prep_dfs(file, tf_df, kmean_df, track6 = False):
     log_df_2 = log_df_2.merge(log_df_1_summary_skip2True, on='session_id')
     log_df_2 = log_df_2.merge(log_df_1_summary_skip2False, on='session_id')
 
-    sim_file_list = ['../models/SVD/all_tracks/similarity_for20180918/k300_CanbDist.csv',
-                     '../models/SVD/all_tracks/similarity_for20180918/k300_CosSim.csv',
-                     '../models/SVD/all_tracks/similarity_for20180918/k300_LinCorr.csv',
-                     '../models/SVD/all_tracks/similarity_for20180918/k300_ManhDist.csv',
-                     '../models/SVD/all_tracks/similarity_for20180918/k300_HammDist.csv',
-                     '../models/SVD/all_tracks/similarity_for20180918/k300_SpearCorr.csv',
-                     '../models/SVD/all_tracks/similarity_for20180918/k300_KendCorr.csv',
-                     '../models/SVD/all_tracks/similarity_for20180918/k300_ChebDist.csv',
-                     '../models/SVD/all_tracks/similarity_for20180918/k300_BrayDist.csv']
+    sim_file_list = ['../models/SVD/all_tracks/'+simFolder+'/k300_CanbDist.csv',
+                     '../models/SVD/all_tracks/'+simFolder+'/k300_CosSim.csv',
+                     '../models/SVD/all_tracks/'+simFolder+'/k300_LinCorr.csv',
+                     '../models/SVD/all_tracks/'+simFolder+'/k300_ManhDist.csv',
+                     '../models/SVD/all_tracks/'+simFolder+'/k300_HammDist.csv',
+                     '../models/SVD/all_tracks/'+simFolder+'/k300_SpearCorr.csv',
+                     '../models/SVD/all_tracks/'+simFolder+'/k300_KendCorr.csv',
+                     '../models/SVD/all_tracks/'+simFolder+'/k300_ChebDist.csv',
+                     '../models/SVD/all_tracks/'+simFolder+'/k300_BrayDist.csv']
     score_name_list = ['CanbDist300', 'CosSim300','LinCorr300','ManhDist300','HammDist300','SpearCorr300','KendCorr300','ChebDist','BrayDist']
 
     return get_sim(log_df_history, log_df_2, sim_file_list, score_name_list)
+
+
+
+
+# def prep_dfs(file, tf_df, kmean_df, track6 = False):
+#     log_df = pd.read_csv(file)
+#     log_df = log_df.merge(kmean_df)
+
+#     log_df_1 = log_df.loc[log_df['session_position']<=(log_df['session_length']/2)]
+#     log_df_1['hour_of_day'] = log_df_1['hour_of_day'].astype('float')
+#     log_df_1['premium'] = log_df_1['premium'].astype('bool')
+#     log_df_1['weekday'] = log_df_1['date'].astype('datetime64[ns]').dt.dayofweek
+#     log_df_1 = log_df_1.drop(columns = ['date'])
+#     log_df_1 = pd.get_dummies(log_df_1, columns=['hist_user_behavior_reason_end', 'hist_user_behavior_reason_start', 'context_type','weekday'], dtype = 'bool')
+#     log_df_1 = log_df_1.merge(tf_df.drop(columns = ['time_signature','mode','key']))
+    
+                     
+#     col_bool = log_df_1.columns[log_df_1.dtypes=='bool']
+#     col_nonbool = log_df_1.columns[log_df_1.dtypes!='bool'].drop(['session_id','track_id_clean','clus'])
+    
+#     # the non-convertable values will be set to 0
+#     log_df_1[col_nonbool] = log_df_1[col_nonbool].apply(pd.to_numeric, errors='coerce', downcast = 'float').fillna(0).astype('float32')
+
+#     # aggregate the track history where ['skip_2']==True
+#     log_df_1_summary_skip2True = pd.concat([log_df_1.loc[log_df_1['skip_2']==True].groupby(['session_id'])[col_bool].agg(['mean']), 
+#                                             log_df_1.loc[log_df_1['skip_2']==True].groupby(['session_id'])[col_nonbool].agg(['mean', 'std', 'median'])],
+#                                             axis = 1)
+#     log_df_1_summary_skip2True.columns = log_df_1_summary_skip2True.columns.get_level_values(0)+'_sk2True_'+log_df_1_summary_skip2True.columns.get_level_values(1)
+    
+#     # aggregate the track history where ['skip_2']==False
+#     log_df_1_summary_skip2False = pd.concat([log_df_1.loc[log_df_1['skip_2']==False].groupby(['session_id'])[col_bool].agg(['mean']), 
+#                                              log_df_1.loc[log_df_1['skip_2']==False].groupby(['session_id'])[col_nonbool].agg(['mean', 'std', 'median'])],
+#                                              axis = 1)
+#     log_df_1_summary_skip2False.columns = log_df_1_summary_skip2False.columns.get_level_values(0)+'_sk2False_'+log_df_1_summary_skip2False.columns.get_level_values(1)
+    
+    
+#     log_df_history = log_df_1[['session_id','track_id_clean','skip_2','clus']]
+
+
+#     half_cut = log_df['session_length']/2
+
+#     # need to at least include 2 trials, otherwise the log_df_1_summary will confound with all the tracks in the same session
+
+#     #1st trial in the 2nd half
+#     log_df_2_1 = log_df.loc[(log_df['session_position']>half_cut) & (log_df['session_position']<=half_cut+1)]
+#     log_df_2_1 = log_df_2_1[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+#     log_df_2_1['weight'] = 1
+
+#     #2nd trial in the 2nd half
+#     log_df_2_2 = log_df.loc[(log_df['session_position']>half_cut+1) & (log_df['session_position']<=half_cut+2)]
+#     log_df_2_2 = log_df_2_2[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+#     log_df_2_2['weight'] = 0.75
+    
+#     #3rd trial in the 2nd half
+#     log_df_2_3 = log_df.loc[(log_df['session_position']>half_cut+2) & (log_df['session_position']<=half_cut+3)]
+#     log_df_2_3 = log_df_2_3[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+#     log_df_2_3['weight'] = 0.62
+    
+#     #4th trial in the 2nd half
+#     log_df_2_4 = log_df.loc[(log_df['session_position']>half_cut+3) & (log_df['session_position']<=half_cut+4)]
+#     log_df_2_4 = log_df_2_4[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+#     log_df_2_4['weight'] = 0.53
+    
+#     #5th trial in the 2nd half
+#     log_df_2_5 = log_df.loc[(log_df['session_position']>half_cut+4) & (log_df['session_position']<=half_cut+5)]
+#     log_df_2_5 = log_df_2_5[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+#     log_df_2_5['weight'] = 0.47
+    
+#     #remaining trials in the 2nd half
+#     log_df_2_6 = log_df.loc[(log_df['session_position']>half_cut+5)]
+#     log_df_2_6 = log_df_2_6[['session_id','track_id_clean','skip_2','session_position','session_length','clus']]
+#     log_df_2_6['weight'] = 0.35
+
+#     if track6 == True:
+#         log_df_2 = pd.concat([log_df_2_1,log_df_2_2,log_df_2_3,log_df_2_4,log_df_2_5,log_df_2_6])
+#     else:
+#         log_df_2 = pd.concat([log_df_2_1,log_df_2_2,log_df_2_3,log_df_2_4,log_df_2_5])
+        
+#     log_df_2 = log_df_2.merge(log_df_1_summary_skip2True, on='session_id')
+#     log_df_2 = log_df_2.merge(log_df_1_summary_skip2False, on='session_id')
+
+#     sim_file_list = ['../models/SVD/all_tracks/similarity_for20180918/k300_CanbDist.csv',
+#                      '../models/SVD/all_tracks/similarity_for20180918/k300_CosSim.csv',
+#                      '../models/SVD/all_tracks/similarity_for20180918/k300_LinCorr.csv',
+#                      '../models/SVD/all_tracks/similarity_for20180918/k300_ManhDist.csv',
+#                      '../models/SVD/all_tracks/similarity_for20180918/k300_HammDist.csv',
+#                      '../models/SVD/all_tracks/similarity_for20180918/k300_SpearCorr.csv',
+#                      '../models/SVD/all_tracks/similarity_for20180918/k300_KendCorr.csv',
+#                      '../models/SVD/all_tracks/similarity_for20180918/k300_ChebDist.csv',
+#                      '../models/SVD/all_tracks/similarity_for20180918/k300_BrayDist.csv']
+#     score_name_list = ['CanbDist300', 'CosSim300','LinCorr300','ManhDist300','HammDist300','SpearCorr300','KendCorr300','ChebDist','BrayDist']
+
+#     return get_sim(log_df_history, log_df_2, sim_file_list, score_name_list)
