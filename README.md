@@ -1,8 +1,10 @@
 
 # Spotify Sequential Skip Prediction Challenge: a smart and light approach
+![](https://github.com/curlsloth/Capstone_Spotify-Sequential-Skip-Prediction/blob/main/reports/figures/music-light-headphone.jpg)
 
-The right data can be more cost effective than big data.
-The model trained by the data of 1 day ahead can best predict the skipping behavior on Spotify.
+**The right data can be more cost effective than big data.**
+
+**The model trained by the data of 1 day ahead can best predict the skipping behavior on Spotify.**
 
 ## 0. Intro
 Spotify is one of the most popular online music streaming services, with hundreds of million users and more than 40 million music tracks. Recommending the right music track to the right user at the right time is their key to success.
