@@ -82,7 +82,7 @@ The number of tracks within each cluster ranged from ~1,000 to 25,000. It nicely
 
 [Jupyter notebook of SVD](https://github.com/curlsloth/Capstone_Spotify-Sequential-Skip-Prediction/blob/main/notebooks/2_collaborative_filtering_svd_allTracks.ipynb)
 
-The data for doing collaborative filtering should be a matrix of session * tracks. The k-means clustering has reduced the number of tracks from 3 millions to 3 hundreds, but there are still hundreds of thousands of sessions within each data file. To further reduce the data size to make it computationally feasible, I used [SVD](https://en.wikipedia.org/wiki/Singular_value_decomposition) (M = UΣV*) to reduce the matrix (M) from millions*300 to 300*300 (V*).
+The data for doing collaborative filtering should be a matrix of session * tracks. The k-means clustering has reduced the number of tracks from 3 millions to 3 hundreds, but there are still hundreds of thousands of sessions within each data file. To further reduce the data size to make it computationally feasible, I used [SVD](https://en.wikipedia.org/wiki/Singular_value_decomposition) (M = UΣV*) to reduce the matrix (M) from >1,000,000x300 to 300x300 (V*).
 
 SVD is computationally very intensive to implement. So, I used the dask module for parallel computing.
 
