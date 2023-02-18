@@ -4,7 +4,7 @@
 
 **The right data can be more cost effective than big data.**
 
-**The model trained by the data of 1 day before can best predict (up to 25% improvement) the skipping behavior on Spotify.**
+**The model trained by the data of 1 day before can best (up to 25% improvement) predict the skipping behavior on Spotify.**
 
 ## 0. Intro
 Spotify is one of the most popular online music streaming services, with hundreds of million users and more than 40 million music tracks. Recommending the right music track to the right user at the right time is their key to success.
